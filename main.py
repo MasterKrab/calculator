@@ -61,12 +61,9 @@ class Window(QWidget):
 
             geometry.setLeft(self.mapToGlobal(end).x())
 
-            width = geometry.width()
+            if self.maximumWidth() > geometry.width() > self.minimumWidth():
+                self.setGeometry(geometry)
 
-            if width > self.maximumWidth() or width < self.minimumWidth():
-                return
-
-            self.setGeometry(geometry)
         elif "right" in self.resize_mode:
             geometry = self.geometry()
             geometry.setRight(self.mapToGlobal(end).x())
@@ -76,12 +73,8 @@ class Window(QWidget):
             geometry = self.geometry()
             geometry.setTop(self.mapToGlobal(end).y())
 
-            height = geometry.height()
-
-            if height > self.maximumHeight() or height < self.minimumHeight():
-                return
-
-            self.setGeometry(geometry)
+            if self.maximumHeight() > geometry.height() > self.minimumHeight():
+                self.setGeometry(geometry)
         elif "bottom" in self.resize_mode:
             geometry = self.geometry()
             geometry.setBottom(self.mapToGlobal(end).y())
