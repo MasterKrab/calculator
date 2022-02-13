@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QScrollArea, QLabel, QPushButton, QGridLayo
 from PyQt6.QtGui import QFont, QIcon
 from PyQt6.QtCore import Qt
 import json
+import os
 
 
 class History(QWidget):
@@ -55,13 +56,14 @@ class History(QWidget):
         self.items = HistoryItems()
         self.layout.addWidget(self.items, 1, 0, 1, 2)
 
-        with open("history.json", "r+") as file:
-            try:
-                history = json.load(file)["items"]
+        try:
+            with open("history.json", "r") as file:
+                history = json.load(file)
+                for item in history["items"]:
+                    self.add_operation(item["operation"], item["result"], save=False)
 
-                for item in history:
-                    self.add_operation(item["operation"], item["result"], False)
-            except json.decoder.JSONDecodeError:
+        except (json.decoder.JSONDecodeError, FileNotFoundError):
+            with open("history.json", "w") as file:
                 json.dump({"items": []}, file)
 
     def delete_all(self):
