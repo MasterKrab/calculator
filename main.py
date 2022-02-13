@@ -37,25 +37,25 @@ class Window(QWidget):
         self.setLayout(self.layout)
 
     def mousePressEvent(self, event):
-        position = event.pos()
-
-        self.start = position
-
-        self.is_resizing = position.x() > self.width() - 20 or position.y() > self.height() - 20
+        self.start = event.pos()
 
     def mouseMoveEvent(self, event):
-        if not self.is_resizing:
-            return
+        end = event.pos()
 
-        position = event.pos()
+        delta = end - self.start
 
-        delta = position - self.start
-        self.start = position
+        if end.x() < 20:
+            geometry = self.geometry()
+            geometry.setLeft(self.mapToGlobal(end).x())
+            self.setGeometry(geometry)
+
+        if end.y() < 20:
+            geometry = self.geometry()
+            geometry.setTop(self.mapToGlobal(end).y())
+            self.setGeometry(geometry)
 
         self.resize(self.width() + delta.x(), self.height() + delta.y())
-
-    def mouseReleaseEvent(self, event):
-        self.is_resizing = False
+        self.start = end
 
 
 app = QApplication([])
