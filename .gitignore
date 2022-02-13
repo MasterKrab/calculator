@@ -125,3 +125,6 @@ dmypy.json
 
 # Editor
 /.idea
+
+# App storage
+history.json
