@@ -14,12 +14,18 @@ class TopBar(QWidget):
         title = QLabel("Calculator")
         title.setFont(QFont("Poppins", 18))
 
+        minimize_button = QPushButton("-", clicked=self.parent.showMinimized)
+        minimize_button.setFixedSize(20, 20)
+        minimize_button.setFont(QFont("Poppins", 18))
+        minimize_button.setStyleSheet("border: none;")
+
         button_close = QPushButton("×", clicked=self.parent.close)
         button_close.setFont(QFont("Poppins", 20))
         button_close.setFixedSize(20, 20)
         button_close.setStyleSheet("border: none;")
 
         self.layout.addWidget(title)
+        self.layout.addWidget(minimize_button)
         self.layout.addWidget(button_close)
         self.setLayout(self.layout)
 
