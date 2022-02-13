@@ -36,26 +36,56 @@ class Window(QWidget):
         self.layout.addWidget(self.history, 1, 1)
         self.setLayout(self.layout)
 
+        self.resize_edge_width = 20
+
     def mousePressEvent(self, event):
         self.start = event.pos()
+
+        self.resize_mode = set()
+
+        if self.start.x() > self.width() - 20:
+            self.resize_mode.add('right')
+        elif self.start.x() < 20:
+            self.resize_mode.add('left')
+
+        if self.start.y() > self.height() - 20:
+            self.resize_mode.add('bottom')
+        elif self.start.y() < 20:
+            self.resize_mode.add('top')
 
     def mouseMoveEvent(self, event):
         end = event.pos()
 
-        delta = end - self.start
-
-        if end.x() < 20:
+        if "left" in self.resize_mode:
             geometry = self.geometry()
+
             geometry.setLeft(self.mapToGlobal(end).x())
+
+            width = geometry.width()
+
+            if width > self.maximumWidth() or width < self.minimumWidth():
+                return
+
+            self.setGeometry(geometry)
+        elif "right" in self.resize_mode:
+            geometry = self.geometry()
+            geometry.setRight(self.mapToGlobal(end).x())
             self.setGeometry(geometry)
 
-        if end.y() < 20:
+        if "top" in self.resize_mode:
             geometry = self.geometry()
             geometry.setTop(self.mapToGlobal(end).y())
-            self.setGeometry(geometry)
 
-        self.resize(self.width() + delta.x(), self.height() + delta.y())
-        self.start = end
+            height = geometry.height()
+
+            if height > self.maximumHeight() or height < self.minimumHeight():
+                return
+
+            self.setGeometry(geometry)
+        elif "bottom" in self.resize_mode:
+            geometry = self.geometry()
+            geometry.setBottom(self.mapToGlobal(end).y())
+            self.setGeometry(geometry)
 
 
 app = QApplication([])
