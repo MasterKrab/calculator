@@ -36,7 +36,7 @@ class Window(QWidget):
         self.layout.addWidget(self.history, 1, 1)
         self.setLayout(self.layout)
 
-        self.resize_edge_width = 20
+        self.resize_edge_width = 8
         self.resize_mode = None
         self.setMouseTracking(True)
 
