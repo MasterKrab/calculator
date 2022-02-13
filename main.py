@@ -37,24 +37,48 @@ class Window(QWidget):
         self.setLayout(self.layout)
 
         self.resize_edge_width = 20
+        self.resize_mode = None
+        self.setMouseTracking(True)
 
     def mousePressEvent(self, event):
         self.start = event.pos()
 
         self.resize_mode = set()
 
-        if self.start.x() > self.width() - 20:
+        if self.start.x() > self.width() - self.resize_edge_width:
             self.resize_mode.add('right')
-        elif self.start.x() < 20:
+        elif self.start.x() < self.resize_edge_width:
             self.resize_mode.add('left')
 
-        if self.start.y() > self.height() - 20:
+        if self.start.y() > self.height() - self.resize_edge_width:
             self.resize_mode.add('bottom')
-        elif self.start.y() < 20:
+        elif self.start.y() < self.resize_edge_width:
             self.resize_mode.add('top')
 
     def mouseMoveEvent(self, event):
         end = event.pos()
+
+        x = end.x()
+        y = end.y()
+
+        is_left = x < self.resize_edge_width
+        is_right = x > self.width() - self.resize_edge_width
+        is_top = y < self.resize_edge_width
+        is_bottom = y > self.height() - self.resize_edge_width
+
+        if (is_left and is_top) or (is_right and is_bottom):
+            self.setCursor(Qt.CursorShape.SizeFDiagCursor)
+        elif (is_left and is_bottom) or (is_right and is_top):
+            self.setCursor(Qt.CursorShape.SizeBDiagCursor)
+        elif is_left or is_right:
+            self.setCursor(Qt.CursorShape.SizeHorCursor)
+        elif is_top or is_bottom:
+            self.setCursor(Qt.CursorShape.SizeVerCursor)
+        else:
+            self.setCursor(Qt.CursorShape.ArrowCursor)
+
+        if not self.resize_mode:
+            return
 
         if "left" in self.resize_mode:
             geometry = self.geometry()
@@ -79,6 +103,9 @@ class Window(QWidget):
             geometry = self.geometry()
             geometry.setBottom(self.mapToGlobal(end).y())
             self.setGeometry(geometry)
+
+    def mouseReleaseEvent(self, event):
+        self.resize_mode = None
 
 
 app = QApplication([])
