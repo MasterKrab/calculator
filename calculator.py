@@ -123,7 +123,6 @@ class Calculator(QWidget):
     def add_operator(self, operator):
         if not self.operation:
             text = self.display.bottom.text()
-            print("text", text)
 
             if text and "Error" not in text:
                 self.operation = f"{text}{operator}"
