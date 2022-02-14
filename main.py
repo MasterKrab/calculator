@@ -17,7 +17,7 @@ class Window(QMainWindow):
         self.setMinimumSize(750, 450)
         self.setMaximumSize(1000, 650)
         self.resize(800, 500)
-        self.setContentsMargins(20, 20, 20, 20)
+        self.setContentsMargins(20, 10, 20, 20)
 
         self.setFont(QFont("Poppins", 14))
 
@@ -60,7 +60,6 @@ class Window(QMainWindow):
             self.resize_mode.add('top')
 
     def mouseMoveEvent(self, event):
-        print("Move")
         end = event.pos()
 
         x = end.x()

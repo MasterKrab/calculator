@@ -148,7 +148,6 @@ class Calculator(QWidget):
         except ZeroDivisionError:
             self.print_error("Error, Cannot divide by zero")
         except (SyntaxError, ValueError) as error:
-            print(self.operation, error)
             self.print_error("Syntax Error")
         except Exception:
             self.print_error()
