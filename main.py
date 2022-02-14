@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QGridLayout, QSizePolicy
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QSizePolicy
 from PyQt6.QtGui import QFontDatabase, QFont
 from PyQt6.QtCore import Qt
 from styles import STYLESHEET
@@ -8,7 +8,7 @@ from calculator import Calculator
 import sys
 
 
-class Window(QWidget):
+class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Calculator")
@@ -17,24 +17,28 @@ class Window(QWidget):
         self.setMinimumSize(750, 450)
         self.setMaximumSize(1000, 650)
         self.resize(800, 500)
+        self.setContentsMargins(20, 20, 20, 20)
 
         self.setFont(QFont("Poppins", 14))
 
-        self.layout = QGridLayout()
-        self.layout.setContentsMargins(10, 10, 10, 10)
-        self.layout.setSpacing(10)
+        self.addToolBar(TopBar(self))
 
-        self.top_bar = TopBar(self)
+        self.main = QWidget()
+        self.main.layout = QGridLayout()
+        self.main.layout.setContentsMargins(8, 8, 8, 8)
+        self.main.layout.setSpacing(10)
 
         self.history = History()
 
         self.calculator = Calculator(self.history)
         self.calculator.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.layout.addWidget(self.top_bar, 0, 0, 1, 2)
-        self.layout.addWidget(self.calculator, 1, 0)
-        self.layout.addWidget(self.history, 1, 1)
-        self.setLayout(self.layout)
+        self.main.layout.addWidget(self.calculator, 1, 0)
+        self.main.layout.addWidget(self.history, 1, 1)
+        self.main.layout.setContentsMargins(0, 0, 0, 0)
+        self.main.layout.setSpacing(20)
+        self.main.setLayout(self.main.layout)
+        self.setCentralWidget(self.main)
 
         self.resize_edge_width = 8
         self.resize_mode = None
@@ -56,6 +60,7 @@ class Window(QWidget):
             self.resize_mode.add('top')
 
     def mouseMoveEvent(self, event):
+        print("Move")
         end = event.pos()
 
         x = end.x()

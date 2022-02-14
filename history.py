@@ -9,6 +9,7 @@ class History(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QGridLayout()
+        self.layout.setContentsMargins(0, 0, 0, 0)
 
         title = QLabel("History")
         title.setFont(QFont("Poppins", 15))

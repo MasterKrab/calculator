@@ -25,7 +25,7 @@ class Calculator(QWidget):
         """)
 
         self.layout = QGridLayout()
-        self.layout.setContentsMargins(10, 10, 0, 10)
+        self.layout.setContentsMargins(0, 0, 0, 0)
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
         self.display = Display()
